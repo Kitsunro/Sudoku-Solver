@@ -20,6 +20,6 @@ public class Main {
         DR2 rule2 = new DR2(Sudoku.getInstance());
         DR3 rule3 = new DR3(Sudoku.getInstance());
         //ToolBox.applyRules(rule1,rule2,rule3);
-        System.out.println(rule2.getNOPP(1,0,3));
+        System.out.println(rule2.getNOPP(6,7,8));
     }
 }

@@ -5,10 +5,6 @@ import Sudoku.Sudoku;
 abstract class DeductibleRule {
     private final Sudoku tempSudoku;
 
-    private boolean check(Sudoku sudoku) {
-        return false;
-    }
-
     public boolean apply(Sudoku sudoku) {
         return false;
     }

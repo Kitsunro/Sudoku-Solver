@@ -30,16 +30,16 @@ public final class ToolBox {
 
     public static void applyRules(DR1 r1,DR2 r2,DR3 r3) {
         int state = 1;
-        while (state != 4) {
+        while (state < 4) {
             System.out.println("Applying one more rule");
             do {
                 Sudoku.getInstance().modified = false;
                 for (int i = 0; i < 81; i++) {
                     for (int x = 1; x < 10; x++) {
                         r1.apply(Sudoku.getInstance(), i % 9, i / 9, x);
-                        //if(state>1){
-                        //    r2.apply(Sudoku.getInstance(),i%9,i/9,x);
-                        //}
+                        if(state>1){
+                            r2.apply(Sudoku.getInstance(),i%9,i/9,x);
+                        }
                         //if(state>2){
                         //    r3.apply(Sudoku.getInstance(),i%9,i/9,x);
                         //}

@@ -20,7 +20,7 @@ public class DR2 extends DeductibleRule{
             for(int y1=0;y1<3;y1++){
                 if(Sudoku.getInstance().isWritable(casex+x1,casey+y1)){
                     Set<Integer> temp = Sudoku.getInstance().getNoPossibleNumber(casex*3+x1,casey*3+y1);
-                    System.out.println(temp);
+                    //System.out.println(temp);
                     NOPP += (temp.contains(who)?0:1);
                 }
             }
@@ -28,7 +28,14 @@ public class DR2 extends DeductibleRule{
         return NOPP;
     }
 
-    public void apply(Sudoku S,int x, int y,int sup) {
-
+    public boolean apply(Sudoku S,int x, int y,int sup) {
+        if(Sudoku.getInstance().isWritable(x,y)){
+            if(getNOPP(x,y,sup)==1){
+                S.setValue(x,y,sup);
+                S.modified = true;
+                return true;
+            }
+        }
+        return false;
     }
 }
