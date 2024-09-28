@@ -39,6 +39,9 @@ public class Sudoku {
         this.unwritable[x+y*9] = 1;
     }
 
+    public boolean isFinished(){
+        return !grid.contains(0);
+    }
 
     public boolean isWritable(int x,int y){
         return this.unwritable[x+y*9]==-1;
@@ -57,6 +60,10 @@ public class Sudoku {
         noPossibleNumber.addAll(Sudoku.getInstance().getRowNumber(y));
         noPossibleNumber.addAll(Sudoku.getInstance().getSquareNumber(x/3,y/3));
         return noPossibleNumber;
+    }
+
+    public void asError(){
+        
     }
 
     public Set<Integer> getSquareNumber(int x,int y){

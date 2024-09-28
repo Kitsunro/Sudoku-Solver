@@ -7,7 +7,30 @@ public class DR3 extends DeductibleRule{
         super(S);
     }
 
-    public void apply(Sudoku S, int x, int y,int sup) {
+    public boolean otherPosibility(int x, int y, int sup){
+        int noofplace = 0;
+        for(int i = 0; i<9 ; i++){
+            if(!(Sudoku.getInstance().getValue(x,i)==0 && Sudoku.getInstance().getNoPossibleNumber(x,i).contains(sup))){
+                noofplace++;
+            }
+        }
+        if(noofplace==1){
+            return true;
+        }
+        noofplace = 0;
+        for(int i = 0; i<9 ; i++){
+            if(Sudoku.getInstance().getValue(i,y)==0 && !Sudoku.getInstance().getNoPossibleNumber(i,y).contains(sup)){
+                noofplace++;
+            }
+        }
+        return (noofplace==1)?true:false;
+    }
 
+    public void apply(Sudoku S, int x, int y,int sup) {
+        if(S.isWritable(x,y) && (!S.getNoPossibleNumber(x,y).contains(sup)) && otherPosibility(x,y,sup)){
+            System.out.println("3. put "+sup+" at "+"x="+x+" y="+y);
+            S.setValue(x,y,sup);
+            S.modified = true;
+        }
     }
 }
