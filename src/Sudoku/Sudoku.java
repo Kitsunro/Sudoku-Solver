@@ -3,17 +3,17 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.ArrayList;
+
 
 public class Sudoku {
     private static Sudoku sudoku;
     private List<Integer> grid;
-    private int[] unwritable;
+    private final int[] unwritable;
     public boolean modified  = false;
 
     private Sudoku(){
         unwritable = new int[81];
-        grid = new ArrayList<Integer>(81);
+        grid = new ArrayList<>(81);
     }
 
     public static Sudoku getInstance(){
@@ -21,10 +21,6 @@ public class Sudoku {
             sudoku = new Sudoku();
         }
         return sudoku;
-    }
-
-    public List<Integer> getGrid(){
-        return grid;
     }
 
     public void setGrid(List<Integer> ngrid){
@@ -47,12 +43,30 @@ public class Sudoku {
         return this.unwritable[x+y*9]==-1;
     }
 
-    public void setUnwritable(int x,int y){
-        this.unwritable[x+y*9] = 1;
-    }
-
     public int getValue(int x,int y){
         return grid.get(x+9*y);
+    }
+
+    public boolean possible(int x,int y){
+        Set<Integer> temp = new HashSet<>();
+        int sup = getValue(x,y);
+        for(int k = 0; k < 3; k++){
+            for(int i = 0; i < 9; i++){
+                switch (k){
+                    case 0:
+                        temp.add((i!=x)?getValue(i,y):0);
+                        break;
+                    case 1:
+                        temp.add(i!=y?getValue(x,i):0);
+                        break;
+                    case 2:
+                        temp.add(i!=x?getValue((x/3)*3+i%3,(y/3)*3+i/3):0);
+                        break;
+                }
+            }
+        }
+        //System.out.println(temp);
+        return !temp.contains(sup);
     }
 
     public Set<Integer> getNoPossibleNumber(int x, int y){
@@ -60,10 +74,6 @@ public class Sudoku {
         noPossibleNumber.addAll(Sudoku.getInstance().getRowNumber(y));
         noPossibleNumber.addAll(Sudoku.getInstance().getSquareNumber(x/3,y/3));
         return noPossibleNumber;
-    }
-
-    public void asError(){
-        
     }
 
     public Set<Integer> getSquareNumber(int x,int y){

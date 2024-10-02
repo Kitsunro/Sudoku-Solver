@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -32,41 +31,48 @@ public final class ToolBox {
             if(input.length() == 3){
                 String[] inputs = input.split("");
                 Sudoku.getInstance().setValue(Integer.parseInt(inputs[0]),Integer.parseInt(inputs[1]),Integer.parseInt(inputs[2]));
-                Sudoku.getInstance().show();
-                break;
+                if(Sudoku.getInstance().possible(Integer.parseInt(inputs[0]),Integer.parseInt(inputs[1]))){
+                    Sudoku.getInstance().show();
+                    System.out.println("You. put "+inputs[2]+" at x="+inputs[0]+" y="+inputs[1]);
+                    correct = false;
+                }else{
+                    System.out.println("Sudoku unsolvable, please restart the program");
+                    System.exit(-1);
+                }
+            }else {
+                System.out.println("Incorrect format. please try again");
             }
-            System.out.println("Incorrect format. please try again");
         }
     }
 
     public static void applyRules(DR1 r1,DR2 r2,DR3 r3) {
-        boolean noError = true;
-        while (noError) {
-            while (State < 4) {
-                System.out.println("Using " + State + " rule:");
-                do {
-                    Sudoku.getInstance().modified = false;
-                    for (int i = 0; i < 81; i++) {
-                        for (int x = 1; x < 10; x++) {
-                            r1.apply(Sudoku.getInstance(), i % 9, i / 9, x);
-                            if (State > 1) {
-                                r2.apply(Sudoku.getInstance(), i % 9, i / 9, x);
-                            }
-                            if (State > 2) {
-                                r3.apply(Sudoku.getInstance(), i % 9, i / 9, x);
-                            }
+        while (true) {
+            System.out.println("Using " + State + " rule:");
+            do {
+                Sudoku.getInstance().modified = false;
+                for (int i = 0; i < 81; i++) {
+                    for (int x = 1; x < 10; x++) {
+                        r1.apply(Sudoku.getInstance(), i % 9, i / 9, x);
+                        if (State > 1) {
+                            r2.apply(Sudoku.getInstance(), i % 9, i / 9, x);
+                        }
+                        if (State > 2) {
+                            r3.apply(Sudoku.getInstance(), i % 9, i / 9, x);
                         }
                     }
-                } while (Sudoku.getInstance().modified);
-                Sudoku.getInstance().show();
-                if (Sudoku.getInstance().isFinished()) {
-                    System.out.println("Finished!");
-                    return;
                 }
-                State += 1;
+            } while (Sudoku.getInstance().modified);
+            Sudoku.getInstance().show();
+            if (Sudoku.getInstance().isFinished()) {
+                System.out.println("Finished! this one was of level :"+State);
+                return;
             }
-            System.out.println("All the rules aren't enough, please choose...");
-            readInput();
+            State += (State<4)?1:0;
+            if(State>=3) {
+                State += (State<4)?1:0;
+                System.out.println("All the rules aren't enough, please choose...");
+                readInput();
+            }
         }
     }
 }
