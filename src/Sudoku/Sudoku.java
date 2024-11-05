@@ -26,7 +26,7 @@ public class Sudoku {
     public void setGrid(List<Integer> ngrid){
         this.grid = ngrid;
         for(int i = 0; i < 81; i++){
-            this.unwritable[i] = ngrid.get(i)==0 ? -1 : 1;
+            this.unwritable[i] = ngrid.get(i)==-1 ? -1 : 1;
         }
     }
 
@@ -36,7 +36,7 @@ public class Sudoku {
     }
 
     public boolean isFinished(){
-        return !grid.contains(0);
+        return !grid.contains(-1);
     }
 
     public boolean isWritable(int x,int y){
@@ -83,7 +83,7 @@ public class Sudoku {
                 set.add(grid.get((x*3)+(y*27)+j+i*9));
             }
         }
-        set.remove(0);
+        set.remove(-1);
         return set;
     }
 
@@ -92,7 +92,7 @@ public class Sudoku {
         for(int i = 0; i < 9; i++){
             set.add(grid.get(i+r*9));
         }
-        set.remove(0);
+        set.remove(-1);
         return set;
     }
 
@@ -101,8 +101,12 @@ public class Sudoku {
         for(int i = 0; i < 9; i++){
             set.add(grid.get(c+i*9));
         }
-        set.remove(0);
+        set.remove(-1);
         return set;
+    }
+
+    public int Minus(int x){
+        return x==-1?0:x;
     }
 
     public void show(){
@@ -122,15 +126,15 @@ public class Sudoku {
                 if(i%27==0){
                     System.out.print("\n*| -   -   - + -   -   - + -   -   -");
                 }
-                System.out.print("\n"+(i/9)+"| "+grid.get(i)+ "   ");
+                System.out.print("\n"+(i/9)+"| "+Minus(grid.get(i))+ "   ");
             } else{
                 if((i+1)%3==0 && !((i+1)%9==0)){
-                    System.out.print(grid.get(i) + " | ");
+                    System.out.print(Minus(grid.get(i)) + " | ");
                 }else {
                     if(i==0){
-                        System.out.print("0| "+grid.get(i)+"   ");
+                        System.out.print("0| "+Minus(grid.get(i))+"   ");
                     }else {
-                        System.out.print(grid.get(i) + "   ");
+                        System.out.print(Minus(grid.get(i)) + "   ");
                     }
                 }
             }

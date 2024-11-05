@@ -10,7 +10,7 @@ public class DR3 extends DeductibleRule{
     public boolean otherPosibility(int x, int y, int sup){
         int noofplace = 0;
         for(int i = 0; i<9 ; i++){
-            if(!(Sudoku.getInstance().getValue(x,i)==0 && Sudoku.getInstance().getNoPossibleNumber(x,i).contains(sup))){
+            if(!(Sudoku.getInstance().getValue(x,i)==-1 && Sudoku.getInstance().getNoPossibleNumber(x,i).contains(sup))){
                 noofplace++;
             }
         }
@@ -19,7 +19,7 @@ public class DR3 extends DeductibleRule{
         }
         noofplace = 0;
         for(int i = 0; i<9 ; i++){
-            if(Sudoku.getInstance().getValue(i,y)==0 && !Sudoku.getInstance().getNoPossibleNumber(i,y).contains(sup)){
+            if(Sudoku.getInstance().getValue(i,y)==-1 && !Sudoku.getInstance().getNoPossibleNumber(i,y).contains(sup)){
                 noofplace++;
             }
         }

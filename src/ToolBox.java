@@ -5,8 +5,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 import java.util.stream.Stream;
+import java.lang.System;
 
 public final class ToolBox {
     public static int State = 1;
@@ -20,20 +23,22 @@ public final class ToolBox {
             throw new RuntimeException(e);
         }
         List<Integer> temp = Stream.of(content.replace("\r\n",",").split(",")).map(Integer::parseInt).toList();
-        return new ArrayList<>(temp);
+        return new ArrayList<>(temp.stream().map(x -> x==0?-1:x).toList());
     }
 
     public static void readInput(){
-        System.out.println("Please enter which number to add => {ex 245 : put 5 at x=2 y=5}");
+        System.out.println("Waiting for user input, follow this format => 245 (will put 5 at x=2 y=4)");
         boolean correct = true;
         while(correct) {
-            String input = System.console().readLine();
+            Scanner scanner = new Scanner(System.in);
+            System.out.print("Enter input: ");
+            String input = scanner.nextLine();
             if(input.length() == 3){
-                String[] inputs = input.split("");
-                Sudoku.getInstance().setValue(Integer.parseInt(inputs[0]),Integer.parseInt(inputs[1]),Integer.parseInt(inputs[2]));
-                if(Sudoku.getInstance().possible(Integer.parseInt(inputs[0]),Integer.parseInt(inputs[1]))){
+                List<Integer> inputs = Arrays.stream(input.split("")).map(Integer::parseInt).toList();
+                Sudoku.getInstance().setValue(inputs.get(0),inputs.get(1),inputs.get(2));
+                if(Sudoku.getInstance().possible(inputs.get(0),inputs.get(1))){
                     Sudoku.getInstance().show();
-                    System.out.println("You. put "+inputs[2]+" at x="+inputs[0]+" y="+inputs[1]);
+                    System.out.println("You. put "+inputs.get(2)+" at x="+inputs.get(0)+" y="+inputs.get(1));
                     correct = false;
                 }else{
                     System.out.println("Sudoku unsolvable, please restart the program");
@@ -52,7 +57,7 @@ public final class ToolBox {
                 Sudoku.getInstance().modified = false;
                 for (int i = 0; i < 81; i++) {
                     for (int x = 1; x < 10; x++) {
-                        r1.apply(Sudoku.getInstance(), i % 9, i / 9, x);
+                            r1.apply(Sudoku.getInstance(), i % 9, i / 9, x);
                         if (State > 1) {
                             r2.apply(Sudoku.getInstance(), i % 9, i / 9, x);
                         }
@@ -68,8 +73,7 @@ public final class ToolBox {
                 return;
             }
             State += (State<4)?1:0;
-            if(State>=3) {
-                State += (State<4)?1:0;
+            if(State>3) {
                 System.out.println("All the rules aren't enough, please choose...");
                 readInput();
             }

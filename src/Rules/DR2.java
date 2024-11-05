@@ -17,7 +17,7 @@ public class DR2 extends DeductibleRule{
         int casey = y/3;
         for(int x1=0;x1<3;x1++){
             for(int y1=0;y1<3;y1++){
-                if(Sudoku.getInstance().getValue(casex*3+x1,casey*3+y1)==0){
+                if(Sudoku.getInstance().getValue(casex*3+x1,casey*3+y1)==-1){
                     Set<Integer> temp = Sudoku.getInstance().getNoPossibleNumber(casex*3+x1,casey*3+y1);
                     //System.out.println(temp + " coord  x="+(casex*3+x1)+" y="+(casey*3+y1));
                     NOPP += (temp.contains(who)?0:1);
