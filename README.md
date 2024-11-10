@@ -15,9 +15,11 @@ The program will give 4 result level :
 3. Three rules to solve
 4. Three plus the help of the user
 
+And of course if the user made an error, it will ask to restart the whole programm
+
 ---
 
-The <text file> need to be like this
+The "text file" need to be like this
 
 **Medium.txt**
 
